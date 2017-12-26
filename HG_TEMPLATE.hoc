@@ -1,0 +1,101 @@
+//one-compartment cell template
+//load_file("nrngui.hoc")
+//The parameters in this model are based on Type C cell of 3-compartment model 
+
+
+/////////////////////////////////////
+///// Hypogastric Ganglion Cell /////
+/////////////////////////////////////
+
+begintemplate HG
+
+public soma, connect2target, type
+public all
+
+create soma
+access soma // declares soma as a membrane compartment object
+	public ncl, synlist
+	objref ncl, synlist
+	strdef type	
+
+     /////biophysical properties/////
+proc init() {
+
+	create soma // create soma in the initialization
+	ncl = new List()
+	synlist =new List()		
+	type = "HG"
+	
+	
+	gUnf_Xsoma = 2.5e-05
+	Rm = 50000 // membrane resistance 
+	Rin = 45600 // input resistance // (kOhms)
+	SpineScale = 1.76371308 //2
+	SpineScale_leak = 1.763714578
+	RaAll= 200
+	RaSoma= 146.969697 //200 
+	RaAxIs = 100//100//200
+	Vpas = -70//-65//-69 // -67 // ????
+	gna =  0.0/0.041//.039//.03*0.6*1.5 //.03*0.6*1.5 /* decreased from 0.03 */
+	AXONM = 3 /*decrease from 2 */
+	gkdr = 0.0/0.005*.6 /* decreased from 0.005 */
+	Vrest = -48.6 // resting membrane potential
+	celsius = 31.0 
+	GmC = 0.0096//0.0085//0.006 //0.0035 //0.0006 // why do all of these have so many values??
+
+     /////geometrical properties/////
+	soma {
+		nseg = 1 // creates only one segment in the soma
+		L = 35 // (micrometer), dimensions from Rogers, Kennedy, Henderson 1990
+		diam = 28 // (micrometer)
+		}
+	
+	soma {
+	
+		insert leak 
+		Ra=RaAll //???
+		cm=2.5 // ???
+		
+		insert na3
+		gbar_na = 0.075 // 0.001 to 0.36 (siemens/cm2)
+		
+		insert kdr 
+		gbar_kdr= 0.022 // 0.0006 to 0.18 (siemens/cm2)
+		
+		insert capool
+		taucas = 1000  
+		
+		insert im 
+		gbar_im = 7.7e-9 // 5.5e-9 to 7.1e-9
+		
+		insert ka
+		gbar_ka = 0.01 // 0.01 to 0.05
+		
+		insert kca
+		gbar_kca = 0.00001 // 0.01 to 0.05
+		
+		insert cas
+		gbar_cas = 0.00001 // 0.00001 to 0.017
+		
+		insert cat
+		gbar_cat = 0.0004	// 0.00001 to 0.017 // 0.00075
+		
+		insert hd
+		ghdbar = 0.00		// 0.00001 to 0.0093
+	
+		ena = 50 // (mV)
+		ek = -80
+		eca = 54.6
+		ehd = -20
+		
+		}
+		
+		
+}
+obfunc connect2target() { localobj nc
+	soma nc = new NetCon(&v(0.5), $o1)  // get explanation for all of these things specifically
+	nc.threshold = 0 // is this the spiking threshold?
+	if (numarg() == 2) ($o2 = nc)
+	return nc
+	}
+endtemplate HG

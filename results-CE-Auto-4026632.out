@@ -1,0 +1,277 @@
+Starting Micturition Model at Tue Dec 26 13:20:29 CST 2017
+Currently Loaded Modulefiles:
+  1) intel/intel-2016-update2   3) openmpi/openmpi-2.0.0
+  2) nrn/nrn-mpi-7.4
+/group/neurolab/Micturition
+cadyn.mod capool.mod cas.mod cat.mod currentclamp.mod h.mod im.mod ka.mod kaprox.mod kca.mod kdrca1.mod leak.mod na3.mod nap.mod netstimNEWh.mod netstimNEWp.mod netstimNEWpud.mod sahp.mod
+cadyn.mod capool.mod cas.mod cat.mod currentclamp.mod h.mod im.mod ka.mod kaprox.mod kca.mod kdrca1.mod leak.mod na3.mod nap.mod netstimNEWh.mod netstimNEWp.mod netstimNEWpud.mod sahp.mod
+"/cluster/software/nrn-mpi/nrn-mpi-7.4/share/nrn/libtool" --tag=CC --mode=compile mpicc -DHAVE_CONFIG_H  -I. -I.. -I"/cluster/software/nrn-mpi/nrn-mpi-7.4/include/nrn" -I"/cluster/software/nrn-mpi/nrn-mpi-7.4/lib"      -g -O2 -c -o mod_func.lo mod_func.c
+libtool: compile:  mpicc -DHAVE_CONFIG_H -I. -I.. -I/cluster/software/nrn-mpi/nrn-mpi-7.4/include/nrn -I/cluster/software/nrn-mpi/nrn-mpi-7.4/lib -g -O2 -c mod_func.c  -fPIC -DPIC -o .libs/mod_func.o
+"/cluster/software/nrn-mpi/nrn-mpi-7.4/share/nrn/libtool" --tag=CC --mode=link mpicc -module  -g -O2    -o libnrnmech.la -rpath "/cluster/software/nrn-mpi/nrn-mpi-7.4/lib"  cadyn.lo capool.lo cas.lo cat.lo currentclamp.lo h.lo im.lo ka.lo kaprox.lo kca.lo kdrca1.lo leak.lo na3.lo nap.lo netstimNEWh.lo netstimNEWp.lo netstimNEWpud.lo sahp.lo mod_func.lo  -L"/cluster/software/nrn-mpi/nrn-mpi-7.4/lib" -lnrnoc -loc -lmemacs -lnrnmpi -lscopmath -lsparse13 -lreadline -lncurses -L"/cluster/software/nrn-mpi/nrn-mpi-7.4/lib" "/cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libnrniv.la" -livoc -lneuron_gnu -lmeschach -lsundials       -lm -ldl
+libtool: link: rm -fr  .libs/libnrnmech.la .libs/libnrnmech.lai .libs/libnrnmech.so .libs/libnrnmech.so.0 .libs/libnrnmech.so.0.0.0
+libtool: link: mpicc -shared  -fPIC -DPIC  .libs/cadyn.o .libs/capool.o .libs/cas.o .libs/cat.o .libs/currentclamp.o .libs/h.o .libs/im.o .libs/ka.o .libs/kaprox.o .libs/kca.o .libs/kdrca1.o .libs/leak.o .libs/na3.o .libs/nap.o .libs/netstimNEWh.o .libs/netstimNEWp.o .libs/netstimNEWpud.o .libs/sahp.o .libs/mod_func.o   -Wl,-rpath -Wl,/cluster/software/nrn-mpi/nrn-mpi-7.4/lib -Wl,-rpath -Wl,/cluster/software/nrn-mpi/nrn-mpi-7.4/lib -L/cluster/software/nrn-mpi/nrn-mpi-7.4/lib /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libnrnoc.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/liboc.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libmemacs.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libnrnmpi.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libscopmath.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libsparse13.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libreadline.so -lncurses /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libnrniv.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libivoc.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libneuron_gnu.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libmeschach.so /cluster/software/nrn-mpi/nrn-mpi-7.4/lib/libsundials.so -lm -ldl  -O2   -pthread -Wl,-soname -Wl,libnrnmech.so.0 -o .libs/libnrnmech.so.0.0.0
+libtool: link: (cd ".libs" && rm -f "libnrnmech.so.0" && ln -s "libnrnmech.so.0.0.0" "libnrnmech.so.0")
+libtool: link: (cd ".libs" && rm -f "libnrnmech.so" && ln -s "libnrnmech.so.0.0.0" "libnrnmech.so")
+libtool: link: ( cd ".libs" && rm -f "libnrnmech.la" && ln -s "../libnrnmech.la" "libnrnmech.la" )
+Successfully created x86_64/special
+Main Micturition file starting at Tue Dec 26 13:20:34 CST 2017
+numprocs=80
+NEURON -- Release 7.4 (1370:16a7055d4a86) 2015-11-09
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2015
+See http://www.neuron.yale.edu/neuron/credits
+
+Additional mechanisms from files
+ cadyn.mod capool.mod cas.mod cat.mod currentclamp.mod h.mod im.mod ka.mod kaprox.mod kca.mod kdrca1.mod leak.mod na3.mod nap.mod netstimNEWh.mod netstimNEWp.mod netstimNEWpud.mod sahp.mod
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+0 nrniv: mindelay is 0 (or less than dt for fixed step method)
+0  in main_model1.hoc near line 366
+0  pc.psolve(tstop)
+                 ^
+        0 ParallelContext[0].psolve(30000)
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	1 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+	0 
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+with errorcode -1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+Program complete... Tue Dec 26 13:20:37 CST 2017

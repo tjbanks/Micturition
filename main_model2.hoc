@@ -1,0 +1,360 @@
+//{load_file("nrngui.hoc")}
+{load_file("PUD_TEMPLATE.hoc")}
+{load_file("MPG_TEMPLATE.hoc")}
+{load_file("HG_TEMPLATE.hoc")}
+//{load_file("graphics_lib.hoc")}
+
+
+v_init = -53.5
+objref pc
+pc = new ParallelContext()
+
+objref synmpgb[10], synhgb[10], synmpgg[1], synhgg[1], synhge[10], synpud[1], synmpge[10],cells ,cellid, nc, nclist, cell, nil, stims, stim
+objref ncmpgbg[10], ncmpgepud[1]
+objref nchgbg[10]
+objref ncmpgge[1]
+objref nchgge[1]
+objref spd[1]
+objref shg[10]
+objref spg[10]
+objref nchggmpge[1] 
+objref ncmpggmpge[1] 
+objref ncpudmpge[1] 
+objref ncpudmogei[1]
+objref ncspdpud[1]
+objref ncspgmpgb[10] 
+objref ncshghgb[10], ncmpgempgg[10]
+objref tvec, idvec 
+
+NCELL = 25
+
+tvec = new Vector()
+idvec = new Vector()
+nclist = new List()
+cells = new List()
+stims = new List()
+
+tstop = 6000000 // in ms
+
+for(i=pc.id;i< (NCELL);i+=pc.nhost) {   // Distribute the cells evenly among nodes
+
+if (i < 12) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 will be PUD
+	cell = new MPG()               	   // Create a cell
+	cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
+	pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
+	nc = cell.connect2target(nil) 				//attach spike detector $
+	nc.delay = 0
+	nc.weight = 1
+	pc.cell(i, nc)	//associate gid i with spike detector
+												// Associate i with the netcon (so that the cluster 
+	                                    // knows where the spikes are coming from)
+		pc.spike_record(i, tvec, idvec)					//records spikes					
+
+} else if (i < 24) {
+		cell = new HG()               	   // Create a cell
+			cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
+			pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
+	nc = cell.connect2target(nil) 				//attach spike detector $
+	nc.delay = 0
+	nc.weight = 1
+	pc.cell(i, nc)	//associate gid i with spike detector
+												// Associate i with the netcon (so that the cluster 
+                                                // knows where the spikes are coming from)
+	pc.spike_record(i, tvec, idvec)				//records spikes									
+												
+}	else if (i < 25){
+	cell = new PUD()               	   // Create a cell
+	cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
+	pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
+	nc = cell.connect2target(nil) 				//attach spike detector $
+	nc.delay = 0
+	nc.weight = 1
+	pc.cell(i, nc)	//associate gid i with spike detector
+												// Associate i with the netcon (so that the cluster 
+	 		                                    // knows where the spikes are coming from)
+	pc.spike_record(i, tvec, idvec)				//records spikes
+	
+}
+}
+
+
+
+
+
+///////////connection MPGB to MPGA/////////////////
+ m = 0   
+	for n = (0), (9)  {
+	l = (m + 9)
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma synmpgb[m] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,synmpgb[m])
+		nc.delay = 1
+		nc.weight = .1
+		nclist.append(nc)
+	
+ 
+		}
+	
+
+
+///////////Feedback connection MPGE to MPGB/////////////////
+
+  l = 10
+  	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma ncmpgempgg[0] = new Exp2Syn(0.9) 
+		
+	for n = (0), (9)  {
+
+
+		nc = pc.gid_connect( n,ncmpgempgg[0])
+		nc.delay = 1
+		nc.weight = .2
+		nclist.append(nc)
+	   
+		}
+	
+
+
+///////////connection HGB to HGA/////////////////
+
+	for n = 12,21  {
+	l = 22
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma synhgb[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,synhgb[0])
+		nc.delay = 1
+		nc.weight = .1
+		nclist.append(nc)
+	 
+		}
+	
+
+///////////connection MPGA to MPGE/////////////////
+   
+	
+	n = 10
+	l = 11
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma synmpgg[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,synmpgg[0])
+		nc.delay = 1
+		nc.weight = 0.45
+		nclist.append(nc)
+		
+
+
+///////////connection HGA to HGE/////////////////
+  
+	
+	n = 23
+	l = 22
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma synhgg[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,synhgg[0])
+		nc.delay = 1
+		nc.weight = .1
+		nclist.append(nc)
+		
+
+
+///////////connection HGA to MPGE/////////////////
+
+	
+	n = 22
+	l = 11
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma nchggmpge[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,nchggmpge[0])
+		nc.delay = 1
+		nc.weight = -0.8
+		nclist.append(nc)
+		
+
+
+///////////connection PUD to MPGE ex/////////////////
+ 
+	
+	n = 24
+	l = 11
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma ncpudmpge[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,ncpudmpge[0])
+		nc.delay = 1
+		nc.weight = .22
+		nclist.append(nc)
+	
+
+
+///////////connection PUD to MPGE inhib/////////////////
+  
+	
+	n = 24
+	l = 11
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma ncpudmogei[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( n,ncpudmogei[0])
+		nc.delay = 1
+		nc.weight = -1
+		
+		nclist.append(nc)
+		
+
+
+///////////Feedback connection MPGe to PUD /////////////////
+
+	
+	n = 24
+	l = 11
+	if(!pc.gid_exists(n)) { continue } 
+
+		cellid = pc.gid2cell(n)
+		cellid.soma ncmpgepud[0] = new Exp2Syn(0.9) 
+		nc = pc.gid_connect( l,ncmpgepud[0])
+		nc.delay = 1
+		nc.weight = 1.0
+		nclist.append(nc)
+	
+
+
+
+///////////connection Stimulators to HGB/////////////////
+for m = 0, 9 {   
+
+	l=m+12
+	
+	
+	if(!pc.gid_exists(l)) { continue } 
+
+		cellid = pc.gid2cell(l)
+		cellid.soma synhge[m] = new Exp2Syn(0.9)
+		shg[m] = new NetStimNEWh()
+		
+		nc = new NetCon(shg[m], synhge[m])
+		nc.delay = 0
+		nc.weight = 1
+		nc.threshold = -10
+		nclist.append(nc)
+	stims.append(shg[m])
+		
+	 
+}
+
+///////////connection Stimulators to MPGB/////////////////
+for m = 0, 9 {   
+	
+	
+	if(!pc.gid_exists(m)) { continue } 
+
+		cellid = pc.gid2cell(m)
+		cellid.soma synmpge[m] = new Exp2Syn(0.9)
+		spg[m] = new NetStimNEWp()
+		
+		
+		nc = new NetCon(spg[m], synmpge[m])
+		nc.delay = 0
+		nc.weight = 1
+		nc.threshold = -10
+		nclist.append(nc)
+		stims.append(spg[m])
+	
+}
+
+
+///////////connection Stimulators to PUD/////////////////
+  
+	
+	n = 24
+	if(!pc.gid_exists(n)) { continue } 
+
+		cellid = pc.gid2cell(n)
+		cellid.soma synpud[0] = new Exp2Syn(0.9)
+		spd[0] = new NetStimNEWpud()
+				
+		nc = new NetCon(spd[0], synpud[0])
+		nc.delay = 0
+		nc.weight = 1
+		nc.threshold = -10
+		nclist.append(nc)
+		stims.append(spd[0])
+
+
+
+
+{pc.set_maxstep(10)}
+stdinit()
+{pc.psolve(tstop)}
+
+
+
+objref spikematrix, myvec, synrec[650]
+	
+spikematrix = new File()
+
+//printf(" %g\n", stims.count)
+///////////Recording Spikes/////////////////
+//proc spikerecord() {local i localobj nc, nil}
+
+
+
+
+
+//spikerecord()
+
+////////////////////////////
+
+// Report simulation results
+objref spikefile
+//sprint(fname,"%g/spikeraster",seed)
+spikefile = new File("mod2data.dat")
+
+if(pc.id==0){     //"wopen" once by node 0 to clear the contents of the file
+spikefile.wopen()
+spikefile.close()
+}
+
+proc spikeout() { local i, rank 
+  pc.barrier()  // wait for all hosts to get to this point 
+  if (pc.id==0) {
+  spikefile.aopen()                               //"aopen" to append data
+spikefile.printf("\ntime\t cell\n")
+//printf("\ntime\t cell\n")
+spikefile.close()  // print header once 
+}
+  for rank=0, pc.nhost-1 {  // host 0 first, then 1, 2, etc. 
+   if (rank==pc.id) { 
+      for i=0, tvec.size-1 { 
+       spikefile.aopen()                               //"aopen" to append data
+spikefile.printf("%8.4f\t %d\n", tvec.x[i], idvec.x[i])
+//printf("%8.4f\t %d\n", tvec.x[i], idvec.x[i])  //This was used to test output
+spikefile.close() 
+
+      } 
+    } 
+    pc.barrier()  // wait for all hosts to get to this point 
+  } 
+}
+  
+  
+spikeout()
+
+
+
+
+{pc.runworker()}
+{pc.done()}

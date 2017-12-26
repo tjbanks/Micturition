@@ -1,0 +1,11 @@
+#!/bin/sh
+#SBATCH --job-name=[MPG]
+
+#SBATCH -o  MPGTEST.o%j.txt
+#SBATCH -e  MPGTEST.e%j.txt
+#SBATCH -p Lewis,RC
+#SBATCH -a RC
+#SBATCH -N 4
+#SBATCH -n 80
+
+mpirun nrniv -mpi main_model1.hoc
