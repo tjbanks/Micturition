@@ -38,7 +38,7 @@ module list
 # MPI flag for explicit safety
 export PSM_RANKS_PER_CONTEXT=2
 
-srun -N 1 -n 1 nrnivmodl
+#srun -N 1 -n 1 nrnivmodl
 ## Commands prefixed with mpirun or srun will run on every core
 echo "Main Micturition file starting at $(date)"
 mpirun nrniv -mpi main_model1.hoc

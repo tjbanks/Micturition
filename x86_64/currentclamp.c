@@ -185,7 +185,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
   hoc_register_prop_size(_mechtype, 6, 2);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 currentclamp /group/neurolab/Micturition/x86_64/currentclamp.mod\n");
+ 	ivoc_help("help ?1 currentclamp /storage/hpc/data/mtgmr5/Micturition/x86_64/currentclamp.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }

@@ -302,7 +302,7 @@ for ii = 0,649{
 
 }
 }
-
+//spikerecord()
 
 spikematrix.wopen("mod2data.dat")
 
@@ -310,11 +310,11 @@ spikematrix.wopen("mod2data.dat")
 
 
 proc spikeout(){
-for ii=0,649{
-for jj =0, tvec.size()-1 {
-spikematrix.printf("%g \t", tvec.x[jj])
-}
-}
+   for ii=0,649{
+      for jj =0, tvec.size()-1 {
+         spikematrix.printf("%g \t", tvec.x[jj])
+      }
+   }
 }
 
 

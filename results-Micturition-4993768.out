@@ -1,0 +1,28 @@
+Starting Micturition Model at Fri Mar 23 16:54:20 CDT 2018
+Currently Loaded Modulefiles:
+  1) intel/intel-2016-update2   3) openmpi/openmpi-2.0.0
+  2) nrn/nrn-mpi-7.4
+Main Micturition file starting at Fri Mar 23 16:54:20 CDT 2018
+numprocs=5
+NEURON -- Release 7.4 (1370:16a7055d4a86) 2015-11-09
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2015
+See http://www.neuron.yale.edu/neuron/credits
+
+Additional mechanisms from files
+ cadyn.mod capool.mod cas.mod cat.mod currentclamp.mod h.mod im.mod ka.mod kaprox.mod kca.mod kdrca1.mod leak.mod na3.mod nap.mod netstimNEWh.mod netstimNEWp.mod netstimNEWpud.mod sahp.mod
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	1 
+	0 
+	0 
+	0 
+	0 
+	0 
+Program complete... Fri Mar 23 16:55:30 CDT 2018
