@@ -10,4 +10,4 @@ if test "" = "yes" ; then
 else
 	NRNIV="${NRNBIN}nrniv"
 fi
-"${NRNIV}" -dll "/group/neurolab/Micturition/x86_64/.libs/libnrnmech.so" "$@"
+"${NRNIV}" -dll "/home/mtgmr5/data/Micturition/x86_64/.libs/libnrnmech.so" "$@"

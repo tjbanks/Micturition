@@ -38,7 +38,7 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 	cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
 	pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
 	nc = cell.connect2target(nil) 				//attach spike detector $
-	nc.delay = 0
+	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
 												// Associate i with the netcon (so that the cluster 
@@ -49,7 +49,7 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 			cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
 			pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
 	nc = cell.connect2target(nil) 				//attach spike detector $
-	nc.delay = 0
+	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
 												// Associate i with the netcon (so that the cluster 
@@ -59,7 +59,7 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 	cells.append(cell)                     // Add this cell to the list (otherwise its lost!)
 	pc.set_gid2node(i, pc.id)   		  // Associate “i” with this node id
 	nc = cell.connect2target(nil) 				//attach spike detector $
-	nc.delay = 0
+	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
 												// Associate i with the netcon (so that the cluster 
@@ -272,7 +272,7 @@ for n = 0, 649 {
 		cellid = pc.gid2cell(n)
 		cellid.soma synrec[n] = new Exp2Syn(0.9) 
 		nc = pc.gid_connect( l,synrec[n])
-		nc.delay = 0
+		nc.delay = 1
 		nc.weight = .1
 		nclist.append(nc)
 		}
@@ -295,7 +295,7 @@ for ii = 0,649{
 	tvec[ii] = new Vector()
 	cellid = pc.gid2cell(ii)
 	nc2[ii] = cellid.connect2target(nil)
-	nc2[ii].delay = 0
+	nc2[ii].delay = 1
 	nc2[ii].weight = 1
 	nc2[ii].threshold=0
 	nc2[ii].record(tvec[ii])

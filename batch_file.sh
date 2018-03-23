@@ -3,11 +3,10 @@
 #  SBATCH CONFIG
 #-------------------------------------------------------------------------------
 ## resources
-#SBATCH --partition RC
-#SBATCH --nodes=2
+#SBATCH --partition Lewis
+#SBATCH -N 1
+#SBATCH -n 5
 
-#SBATCH --ntasks-per-node=20  # don't trust SLURM to divide the cores evenly
-#SBATCH --cpus-per-task=1  # cores per task; set to one if using MPI
 #SBATCH --exclusive  # using MPI with 90+% of the cores you should go exclusive
 
 #SBATCH --time 0-01:00  # days-hours:minutes
@@ -16,7 +15,7 @@
 
 ## labels and outputs
 #SBATCH --job-name=MICTEST
-#SBATCH --output=results-CE-Auto-%j.out  # %j is the unique jobID
+#SBATCH --output=results-Micturition-%j.out  # %j is the unique jobID
 ## notifications
 ##SBATCH --mail-user=latimerb@missouri.edu  # email address for notifications
 ##SBATCH --mail-type=END,FAIL  # which type of notifications to send
