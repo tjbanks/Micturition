@@ -3,7 +3,7 @@
 #  SBATCH CONFIG
 #-------------------------------------------------------------------------------
 ## resources
-#SBATCH --partition Lewis
+#SBATCH --partition General
 #SBATCH -N 1
 #SBATCH -n 5
 
@@ -28,7 +28,7 @@ echo "Starting Micturition Model at $(date)"
 #module load matlab/matlab-R2016a
 module load intel/intel-2016-update2
 module load nrn/nrn-mpi-7.4
-module load openmpi/openmpi-2.0.0
+module load openmpi/openmpi-1.10.2
 module list
 
 ## Run matlab non-interactively

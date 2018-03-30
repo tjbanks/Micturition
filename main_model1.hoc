@@ -280,40 +280,46 @@ for n = 0, 649 {
 
 
 
+objref tvec, idvec//[649], nc2[649]	// to record spike times (tvec)
 
+proc spikerecord() {local i localobj nc, nil
 
-
-
-
-
-
-
-objref tvec[649], nc2[649]	// to record spike times (tvec)
-
-proc spikerecord() {local ii localobj nil
-for ii = 0,649{
-	tvec[ii] = new Vector()
-	cellid = pc.gid2cell(ii)
-	nc2[ii] = cellid.connect2target(nil)
-	nc2[ii].delay = 1
-	nc2[ii].weight = 1
-	nc2[ii].threshold=0
-	nc2[ii].record(tvec[ii])
-
+	tvec = new Vector()
+	idvec = new Vector()
+	for i=0, cells.count-1 {
+	  nc = cells.object(i).connect2target(nil)
+	  nc.record(tvec, idvec, nc.srcgid)
+          //Vector will continue to record spike times even after the NetCon has been destroyed
+	}
 }
+
+if(pc.id==0){ //We only want the first host to clear the file
+   spikematrix.wopen("mod2data.dat")
+   spikematrix.close()
 }
-//spikerecord()
-
-spikematrix.wopen("mod2data.dat")
 
 
+spikerecord()
+
+objref spikefile
+spikefile = new File("mod2data.dat")
 
 
-proc spikeout(){
-   for ii=0,649{
-      for jj =0, tvec.size()-1 {
-         spikematrix.printf("%g \t", tvec.x[jj])
+proc spikeout(){ local i,j, rank
+   printf("Writing output spikefile.\n")
+   {pc.barrier()} // wait for all hosts to get to this point
+
+   for rank=0, pc.nhost-1 { // host 0 first, then 1, 2, etc.
+
+      if (rank==pc.id) {
+         printf("Writing from host: %d | tvec size is: %d \n",rank,tvec.size)
+         for i=0, tvec.size-1 {
+            spikefile.aopen()
+            spikefile.printf("%8.4f\t %d\n", tvec.x[i], idvec.x[i])
+            spikefile.close()
+         }
       }
+      {pc.barrier()} // wait for all hosts to get to this point
    }
 }
 
@@ -363,7 +369,10 @@ proc newPlotVoltage() {
 //MainBox()  
 //spikerecord()
 pc.set_maxstep(5)
+
 pc.psolve(tstop)
+
+spikeout()
 
 {pc.runworker()}
 {pc.done()}
