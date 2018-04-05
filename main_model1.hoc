@@ -234,14 +234,14 @@ proc spikerecord() {local i localobj nc,tv,id, nil
         tvec = new Vector()
         idvec = new Vector()
 	for i=0, cells.count-1 {
-		nc = cells.object(i).connect2target(nil)
+                nc = cells.object(i).connect2target(nil)
 		nc.record(tvec, idvec, nc.srcgid)
 		printf("Started recording from cell %d on host %d\n",i,pc.id)
 	}
 }
 //printf("before calling spike record, tvec count: %d\n", tvec.size)
 spikerecord()
-printf("after calling spike record, tvec count: %d\n", tvec.size)
+printf("after calling spike record, tvec count: %d\n", tvec.size())
 /* objref spikematrix, myvec, synrec[650]
 
 spikematrix = new File()
@@ -280,8 +280,8 @@ proc spikeout(){ local i,j, rank
 
 	for rank=0, pc.nhost-1 { // host 0 first, then 1, 2, etc.
 		if (rank==pc.id) {
-		printf("Writing from host: %d | tvec size is: %d \n",rank,tvec.size)
-			for i=0, tvec.size-1 {
+		printf("Writing from host: %d | tvec size is: %d \n",rank,tvec.size())
+			for i=0, tvec.size()-1 {
 				spikefile.aopen()
 				spikefile.printf("%8.4f\t %d\n", tvec.x[i], idvec.x[i])
 				spikefile.close()
