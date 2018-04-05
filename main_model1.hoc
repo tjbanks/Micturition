@@ -14,6 +14,7 @@ objref ncmpgbg[250], nchgbg[250], ncmpgge[25], nchgge[25], spd[25], shg[250], sp
 objref ncmpggmpge[25], ncpudmpge[25], ncpudmogei[25], ncspdpud[25], ncspgmpgb[250], ncshghgb[250], ncmpgempgg[250]
 
 NCELL = 625
+objref tvec[NCELL], idvec[NCELL]
 
 nclist = new List()
 cells = new List()
@@ -31,8 +32,8 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
-	printf("\ncell_number%d",i)
-	printf("\ncreated_on%d",pc.id)	
+	printf("\ncell_number %d",i)
+	printf("\ncreated_on %d",pc.id)	
 
 } else if (i < 600) {
 	cell = new HG()               	   // Create a cell
@@ -42,8 +43,8 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
-	printf("\ncell_number%d",i)
-	printf("\ncreated_on%d",pc.id)	
+	printf("\ncell_number %d",i)
+	printf("\ncreated_on %d",pc.id)	
 	
 }	else {
 	cell = new PUD()               	   // Create a cell
@@ -53,14 +54,15 @@ if (i < 300) {							// Cells 0-299 will be MPG, 300-599 will be HG, 600-624 wil
 	nc.delay = 1
 	nc.weight = 1
 	pc.cell(i, nc)	//associate gid i with spike detector
-	printf("\ncell_number%d",i)
-	printf("\ncreated_on%d",pc.id)	
+	printf("\ncell_number %d",i)
+	printf("\ncreated_on %d",pc.id)	
 	}
 } 
 
 k=0
 ///////////connection MPGB to MPGA/////////////////
 
+printf("connecting MPGB to MPGA\n")
 for m = 0, 24 {   
 	for n = (0+m*10), (9+m*10)  {
 	l = (m + 250)
@@ -76,7 +78,7 @@ for m = 0, 24 {
 }
 
 ///////////Feedback connection MPGE to MPGB/////////////////
-
+printf("Feedback connection MPGE to MPGB\n")
 for m = 0, 24 { 
 	l = (m + 275)
 	if(!pc.gid_exists(l)) { continue } 
@@ -93,7 +95,7 @@ for n = (0+m*10), (9+m*10)  {
 }
 
 ///////////connection HGB to HGA/////////////////
-
+printf("connection HGB to HGA\n")
 for m = 0, 24 {   
 	for n = (300+m*10), (309+m*10)  {
 		l = (m + 550)
@@ -109,7 +111,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection MPGA to MPGE/////////////////
-
+printf("connection MPGA to MPGE\n")
 for m = 0, 24 {   
 	n = (m + 250)
 	l = (m + 275)
@@ -124,7 +126,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection HGA to HGE/////////////////
-
+printf("connection HGA to HGE\n")
 for m = 0, 24 {   
 	n = (m + 550)
 	l = (m + 575)
@@ -139,7 +141,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection HGA to MPGE/////////////////
-
+printf("connection HGA to MPGE\n")
 for m = 0, 24 {   
 	n = (m + 550)
 	l = (m + 275)
@@ -154,7 +156,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection PUD to MPGE ex/////////////////
-
+printf("connection PUD to MPGE ex\n")
 for m = 0, 24 {   
 	n = (m + 600)
 	l = (m + 275)
@@ -169,7 +171,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection PUD to MPGE inhib/////////////////
-
+printf("connection PUD to MPGE inhib\n")
 for m = 0, 24 {   
 	n = (m + 600)
 	l = (m + 275)
@@ -184,7 +186,7 @@ for m = 0, 24 {
 	}
 
 ///////////connection Stimulators to HGB/////////////////
-
+printf("connection Stimulators to HGB\n")
 for m = 0, 249 {   
 	n=m+300
 	if(!pc.gid_exists(n)) { continue } 
@@ -198,7 +200,7 @@ for m = 0, 249 {
 	}
 
 ///////////connection Stimulators to MPGB/////////////////
-
+printf("connection Stimulators to MPGB\n")
 for m = 0, 249 {   
 	if(!pc.gid_exists(m)) { continue } 
 		cellid = pc.gid2cell(m)
@@ -211,10 +213,11 @@ for m = 0, 249 {
 	}
 
 ///////////connection Stimulators to PUD/////////////////
-
+printf("connection Stimulators to PUD\n")
 for m = 0, 24 {   
 	n = (m + 600)
 	if(!pc.gid_exists(n)) { continue } 
+		//printf("stim_%d\n",m)
 		cellid = pc.gid2cell(n)
 		cellid.soma spd[m] = new NetStimNEWpud(0.9)
 		nc = pc.gid_connect( n,spd[m])
@@ -223,18 +226,22 @@ for m = 0, 24 {
 		nclist.append(nc)
 		k=k+1
 	}
-
-objref tvec, idvec
+printf("define spike record")
 proc spikerecord() {local i localobj nc, nil
 	
-	tvec = new Vector()
-	idvec = new Vector()
+	printf("Spike record called, number of cells: %d\n",cells.count)
 	for i=0, cells.count-1 {
+		tvec[i] = new Vector()
+		idvec[i] = new Vector()
 		nc = cells.object(i).connect2target(nil)
-		nc.record(tvec, idvec, nc.srcgid)
+		nc.record(tvec[i], idvec[i], nc.srcgid)
+		printf("Started recording from cell %d on host %d\n",i,pc.id)
 	}
 }
+
+printf("before calling spike record\n")
 spikerecord()
+printf("after calling spike record\n")
 /* objref spikematrix, myvec, synrec[650]
 
 spikematrix = new File()
@@ -262,9 +269,9 @@ objref spikefile
 spikefile = new File("MictParallel.dat")
 
 if(pc.id==0){ //We only want the first host to clear the file
-	spikefile.wopen("mod2data.dat")
+	spikefile.wopen()
 	spikefile.close()
-	}
+}
 
 proc spikeout(){ local i,j, rank
 
@@ -287,7 +294,7 @@ proc spikeout(){ local i,j, rank
 pc.set_maxstep(5)
 pc.psolve(tstop)
 spikeout()
-{pc.runworker()}
-{pc.done()}
+pc.runworker()
+pc.done()
 
 
