@@ -10,8 +10,8 @@ objref pc
 pc = new ParallelContext()
 
 objref synmpgb[250], synhgb[250], synmpgg[25], synhgg[25], synhge[25], synpud[25], synmpge[25],cells ,cellid, nc, nclist, cell[625], nil
-objref ncmpgbg[250], objref nchgbg[250], objref ncmpgge[25], objref nchgge[25], objref spd[25], objref shg[250], objref spg[250], objref nchggmpge[25] 
-objref ncmpggmpge[25], objref ncpudmpge[25], objref ncpudmogei[25], objref ncspdpud[25], objref ncspgmpgb[250], objref ncshghgb[250], ncmpgempgg[250]
+objref ncmpgbg[250], nchgbg[250], ncmpgge[25], nchgge[25], spd[25], shg[250], spg[250], nchggmpge[25] 
+objref ncmpggmpge[25], ncpudmpge[25], ncpudmogei[25], ncspdpud[25], ncspgmpgb[250], ncshghgb[250], ncmpgempgg[250]
 
 NCELL = 625
 
