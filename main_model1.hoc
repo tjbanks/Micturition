@@ -14,10 +14,6 @@ objref ncmpgbg[250], nchgbg[250], ncmpgge[25], nchgge[25], spd[25], shg[250], sp
 objref ncmpggmpge[25], ncpudmpge[25], ncpudmogei[25], ncspdpud[25], ncspgmpgb[250], ncshghgb[250], ncmpgempgg[250]
 
 NCELL = 625
-objref tvec, idvec
-
-tvec = new List()
-idvec = new List()
 
 nclist = new List()
 cells = new List()
@@ -229,25 +225,23 @@ for m = 0, 24 {
 		nclist.append(nc)
 		k=k+1
 	}
-	
-	
+pc.barrier()
+objref tvec, idvec	
 
 proc spikerecord() {local i localobj nc,tv,id, nil
 	
 	printf("Spike record called, number of cells: %d\n",cells.count)
+        tvec = new Vector()
+        idvec = new Vector()
 	for i=0, cells.count-1 {
-		tv = new Vector()
-		id = new Vector()
 		nc = cells.object(i).connect2target(nil)
-		nc.record(tv, id, nc.srcgid)
-		tvec.append(tv)
-		idvec.append(id)
+		nc.record(tvec, idvec, nc.srcgid)
 		printf("Started recording from cell %d on host %d\n",i,pc.id)
 	}
 }
-printf("before calling spike record, tvec count: %d\n", tvec.count)
+//printf("before calling spike record, tvec count: %d\n", tvec.size)
 spikerecord()
-printf("after calling spike record, tvec count: %d\n", tvec.count)
+printf("after calling spike record, tvec count: %d\n", tvec.size)
 /* objref spikematrix, myvec, synrec[650]
 
 spikematrix = new File()
@@ -286,21 +280,21 @@ proc spikeout(){ local i,j, rank
 
 	for rank=0, pc.nhost-1 { // host 0 first, then 1, 2, etc.
 		if (rank==pc.id) {
-		printf("Writing from host: %d | tvec size is: %d \n",rank,tvec.count)
-			for i=0, tvec.count-1 {
+		printf("Writing from host: %d | tvec size is: %d \n",rank,tvec.size)
+			for i=0, tvec.size-1 {
 				spikefile.aopen()
-				spikefile.printf("%8.4f\t %d\n", tvec.object(i).x, idvec.object(i).x)
+				spikefile.printf("%8.4f\t %d\n", tvec.x[i], idvec.x[i])
 				spikefile.close()
 			}
 		}
 		{pc.barrier()} // wait for all hosts to get to this point
-		}
 	}
+}
 
 pc.set_maxstep(5)
 pc.psolve(tstop)
 spikeout()
-pc.runworker()
-pc.done()
+{pc.runworker()}
+{pc.done()}
 
 
